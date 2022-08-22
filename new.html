@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="../node_modules/jquery/dist/jquery.min.js"></script>
+<script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../node_modules/xlsx/xlsx.js"></script>
+<script src="worker.js"></script>
+<head>
+    <title>Document</title>
+</head>
+
+
+
+<body>
+    <div class="container-md">
+        <div class="row">
+            <div class="col">
+                <p id="EnergyText" style="font-size: 40px;">Energy</p>
+            </div>
+            <div class="col">
+                <p id="MoneyText" class="fs-1">Money</p>
+            </div>
+            <div class="col">
+                <p id="DepthText" class="fs-1">Depth</p>
+            </div>
+          </div>
+    </div>
+
+    <div class="container-md">
+      <button type="button" id="TestButton" class="btn btn-outline-primary" onclick="ShowEnergy()" data-toggle="tooltip" data-placement="left" title="tip_message">Change</button>
+      <button type="button" id="FlyButton" class="btn btn-outline-primary" onclick="MoveItem()" data-toggle="tooltip" title="tip_message">Fly</button>
+      <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Launch demo modal</button>
+      <button type="button" id="WorkButton" class="btn btn-outline-primary" onclick="TryWork()">Work</button>
+      <button type="button" id="RelaxButton" class="btn btn-outline-primary" onclick="TryRelax()">Relax</button>
+    </div>
+    
+    <div class="container-md">
+        <img src="hammer.jpg" class="img-fluid" alt="test img">
+    </div>    
+      
+    <div class="container-md">
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table" id="datatable" data-toggle="tooltip" data-placement="left" title="tip_message">
+                <th>1</th>
+                <th>2</th>
+                <th>3</th>
+                <th>4</th>
+              </table>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>  
+    </div> 
+
+    <div class="container-md" style="height: 200px; overflow:auto">
+      <div class="row row-cols-2 row-cols-lg-4 g-2 g-lg-3">
+        <div class="col">
+          <div class="p-3 border bg-light">Row column</div>
+        </div>
+        <div class="col">
+          <div class="p-3 border bg-light">Row column</div>
+        </div>
+        <div class="col">
+          <div class="p-3 border bg-light">Row column</div>
+        </div>
+        <div class="col">
+          <div class="p-3 border bg-light">Row column</div>
+        </div>
+        <div class="col">
+          <div class="p-3 border bg-light">Row column</div>
+        </div>
+        <div class="col">
+          <div class="p-3 border bg-light">Row column</div>
+        </div>
+        <div class="col">
+          <div class="p-3 border bg-light">Row column</div>
+        </div>
+        <div class="col">
+          <div class="p-3 border bg-light">Row column</div>
+        </div>
+        <div class="col">
+          <div class="p-3 border bg-light">Row column</div>
+        </div>
+        <div class="col">
+          <div class="p-3 border bg-light">Row column</div>
+        </div>
+      </div>
+    </div>
+    
+</body>
+
+<script>            
+    var worker = new Worker();
+    var i = 0;
+
+    window.onload = function LoadData() {
+        var table = document.getElementById("datatable");
+        for(var i=0;i<worker.items.length;i++){
+            var row=table.insertRow(table.rows.length);
+            var c1=row.insertCell(0);
+            c1.innerHTML=worker.items[i].ItemID;
+            var c2=row.insertCell(1);
+            c2.innerHTML=worker.items[i].ItemName;
+            var c3=row.insertCell(2);
+            c3.innerHTML=worker.items[i].ItemDiscription;
+            var c4=row.insertCell(3);
+            c4.innerHTML=worker.items[i].ItemOnable;
+        }
+    }
+
+    function ShowEnergy() {
+        var energy_text = document.getElementById("EnergyText");
+        var money_text = document.getElementById("MoneyText");
+        var depth_text = document.getElementById("DepthText")
+        var button = document.getElementById("TestButton");
+        energy_text.innerText = "Energy:" + worker.energy;
+        money_text.innerText = "Money:" + worker.money;
+        depth_text.innerText = "Depth:" + worker.depth;
+        button.innerText = "fine";
+    }
+
+    function MoveItem() {
+        var money_text = document.getElementById("MoneyText");
+        money_text.style.position = "absolute"  
+
+        if(i<800) {
+            i = i+1;
+            money_text.style.top = i + "px";
+            setTimeout("MoveItem()",25);
+        } else {
+            i = 0; 
+        }               
+              
+    }
+
+    function TryWork() {
+        worker.Work();
+        ShowEnergy();
+    }
+
+    function TryRelax() {
+        worker.Relax();
+        ShowEnergy();
+    }
+
+    (function () { $("[data-toggle='tooltip']").tooltip(); });
+</script>
+
+</html>
