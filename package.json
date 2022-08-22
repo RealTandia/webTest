@@ -1,0 +1,24 @@
+{
+  "name": "electron",
+  "version": "1.0.0",
+  "description": "electron test demo",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "tanjing",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^20.0.2"
+  },
+  "dependencies": {
+    "app": "^0.1.0",
+    "bootstrap": "^5.2.0",
+    "browser-window": "^0.4.0",
+    "jquery": "^3.6.0",
+    "update-electron-app": "^2.0.1",
+    "xlsx": "^0.18.5"
+  }
+}
