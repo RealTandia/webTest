@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height:100%;">
 <link href="bootstrap.min.css" rel="stylesheet">
 <script src="jquery.min.js"></script>
 <script src="bootstrap.min.js"></script>
@@ -11,91 +11,62 @@
 
 
 
-<body>
-    <div class="container-md">
+<body style="margin:0;height:100%;">
+    <div class="container-fluid" style="height:30%">
         <div class="row">
             <div class="col">
-                <p id="EnergyText" style="font-size: 40px;">Energy</p>
+                <p id="EnergyText" style="font-size: 60px; margin: 10px;">体力</p>
             </div>
             <div class="col">
-                <p id="MoneyText" class="fs-1">Money</p>
+                <button type="button" class="btn btn-outline-primary" style="height:80%; width:60%; margin: 10px;float:right; font-size: 40px" data-bs-toggle="modal" data-bs-target="#exampleModal">查看物品</button>
             </div>
-            <div class="col">
-                <p id="DepthText" class="fs-1">Depth</p>
-            </div>
-          </div>
+        </div>
+        <p id="MoneyText" style="font-size: 60px; margin: 10px;">金钱</p>      
     </div>
 
-    <div class="container-md">
-      <button type="button" id="TestButton" class="btn btn-outline-primary" onclick="ShowEnergy()" data-toggle="tooltip" data-placement="left" title="tip_message">Change</button>
-      <button type="button" id="FlyButton" class="btn btn-outline-primary" onclick="MoveItem()" data-toggle="tooltip" title="tip_message">Fly</button>
-      <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Launch demo modal</button>
-      <button type="button" id="WorkButton" class="btn btn-outline-primary" onclick="TryWork()">Work</button>
-      <button type="button" id="RelaxButton" class="btn btn-outline-primary" onclick="TryRelax()">Relax</button>
+    <div class="container-fluid" style="height:10%">
+        <p id="DepthText" style="font-size: 60px; max-width:100%; max-height:100%; text-align:center">已连续工作0小时</p>
     </div>
-    
-    <div class="container-md">
-        <img src="hammer.jpg" class="img-fluid" alt="test img">
+
+    <div class="container-fluid" style="height:30%">
+        <img src="hammer.jpg" style="max-width:80%; max-height:80%; width:auto; height:auto; margin: auto; display: flex; justify-content: center; align-items: center;" alt="imgtest" class="img-fluid" onclick="TryWork()">    
     </div>    
       
-    <div class="container-md">
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
+    <div class="container-fluid" style="height: 10%; text-align:center">
+        <button type="button" id="RelaxButton" class="btn btn-outline-primary" style="width:30%; font-size: 40px;" onclick="TryRelax()">休息</button>
+    </div>
+
+    <div class="container-fluid">
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="width: 100%;">
+        <div class="modal-dialog" style="top:10%; width:80vw;">
+          <div class="modal-content" style="">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+              <h5 class="modal-title" id="exampleModalLabel">物品详情</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <table class="table" id="datatable" data-toggle="tooltip" data-placement="left" title="tip_message">
-                <th>1</th>
-                <th>2</th>
-                <th>3</th>
-                <th>4</th>
-              </table>
+              <div class="container-fluid" style="height:30vh; overflow:auto">
+                <div id="ItemList" class="row row-cols-1 row-cols-lg-4 g-2 g-lg-3">
+                  
+                </div>
+              </div>
+              <div class="container-fluid" style="height:30vh; border-style:solid; border-color:brown">
+                <div id="ItemName" style="white-space:normal; word-break:break-all;overflow:hidden;">道具名</div>
+                <div id="ItemDiscription" style="white-space:normal; word-break:break-all;overflow:hidden;">道具描述</div>
+                <div id="EffectDiscription" style="white-space:normal; word-break:break-all;overflow:hidden;">道具效果</div>
+              </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+              <button id="BuyButton" disabled="true" onclick="BuyItem()" type="button" class="btn btn-primary">买</button>
             </div>
           </div>
         </div>
       </div>  
     </div> 
 
-    <div class="container-md" style="height: 200px; overflow:auto">
-      <div class="row row-cols-2 row-cols-lg-4 g-2 g-lg-3">
-        <div class="col">
-          <div class="p-3 border bg-light">Row column</div>
-        </div>
-        <div class="col">
-          <div class="p-3 border bg-light">Row column</div>
-        </div>
-        <div class="col">
-          <div class="p-3 border bg-light">Row column</div>
-        </div>
-        <div class="col">
-          <div class="p-3 border bg-light">Row column</div>
-        </div>
-        <div class="col">
-          <div class="p-3 border bg-light">Row column</div>
-        </div>
-        <div class="col">
-          <div class="p-3 border bg-light">Row column</div>
-        </div>
-        <div class="col">
-          <div class="p-3 border bg-light">Row column</div>
-        </div>
-        <div class="col">
-          <div class="p-3 border bg-light">Row column</div>
-        </div>
-        <div class="col">
-          <div class="p-3 border bg-light">Row column</div>
-        </div>
-        <div class="col">
-          <div class="p-3 border bg-light">Row column</div>
-        </div>
-      </div>
+    <div id="MessageBox" class="container-fluid" style="height: 20%; width:auto; overflow:auto; text-align:center; border-style:solid; border-color:blueviolet">
+        
     </div>
     
 </body>
@@ -105,33 +76,27 @@
     var i = 0;
 
     window.onload = function LoadData() {
-        var table = document.getElementById("datatable");
-        for(var i=0;i<worker.items.length;i++){
-            var row=table.insertRow(table.rows.length);
-            var c1=row.insertCell(0);
-            c1.innerHTML=worker.items[i].ItemID;
-            var c2=row.insertCell(1);
-            c2.innerHTML=worker.items[i].ItemName;
-            var c3=row.insertCell(2);
-            c3.innerHTML=worker.items[i].ItemDiscription;
-            var c4=row.insertCell(3);
-            c4.innerHTML=worker.items[i].ItemOnable;
-        }
+        let item_list = document.getElementById("ItemList")
+        for (let j=0;j<worker.items.length;j++) {
+            item_list.insertAdjacentHTML("beforeend",'<div class="col" style="font-size:30px" onclick="ShowMessage(this)"><div id=item_' + worker.items[j]["ItemID"] + ' class="p-3 border bg-light">'+ worker.items[j]["ItemName"] +'</div></div>');
+        } 
+    }
+
+    window.onunload = function SetCookie() {
+      
     }
 
     function ShowEnergy() {
-        var energy_text = document.getElementById("EnergyText");
-        var money_text = document.getElementById("MoneyText");
-        var depth_text = document.getElementById("DepthText")
-        var button = document.getElementById("TestButton");
-        energy_text.innerText = "Energy:" + worker.energy;
-        money_text.innerText = "Money:" + worker.money;
-        depth_text.innerText = "Depth:" + worker.depth;
-        button.innerText = "fine";
+        let energy_text = document.getElementById("EnergyText");
+        let money_text = document.getElementById("MoneyText");
+        let depth_text = document.getElementById("DepthText");
+        energy_text.innerText = "体力:" + worker.energy;
+        money_text.innerText = "金钱:" + worker.money;
+        depth_text.innerText = "已连续工作:" + worker.depth + "小时";
     }
 
     function MoveItem() {
-        var money_text = document.getElementById("MoneyText");
+        let money_text = document.getElementById("MoneyText");
         money_text.style.position = "absolute"  
 
         if(i<800) {
@@ -147,11 +112,52 @@
     function TryWork() {
         worker.Work();
         ShowEnergy();
+        SendMessage();
     }
 
     function TryRelax() {
         worker.Relax();
         ShowEnergy();
+    }
+
+    function SendMessage() {
+        let message_box = document.getElementById("MessageBox");
+        message_box.insertAdjacentHTML("beforeend","<h1>work success</h1>");
+        message_box.scrollTop = message_box.scrollHeight;
+    }
+
+    //点击物品展示信息
+    function ShowMessage(obj) {
+        let item_name = document.getElementById("ItemName");
+        let item_discription = document.getElementById("ItemDiscription");
+        let effect_discription = document.getElementById("EffectDiscription");
+        let buy_button = document.getElementById("BuyButton");
+
+        let item_id = window.event.srcElement.id;
+        worker.item = item_id.charAt(item_id.length - 1);    //获取点击物品id
+        
+        item_name.innerText ="物品名：" + worker.items[worker.item]["ItemName"];
+        item_discription.innerText ="物品描述:" + worker.items[worker.item]["ItemDiscription"];
+        effect_discription.innerText ="物品效果:" + worker.items[worker.item]["EffectDiscription"];
+
+        if(worker.money >= worker.items[worker.item]["ItemPrice"] && worker.items[worker.item]["ItemOnable"]==0) {
+            buy_button.disabled = false
+        } else {
+            buy_button.disabled = true
+        }
+
+        if(worker.items[worker.item]["ItemOnable"]==1) {    //如果已经有了
+            buy_button.innerText = "已拥有";
+        } else {
+            buy_button.innerText = "买";
+        }
+    }
+
+    function BuyItem() {
+        let buy_button = document.getElementById("BuyButton");
+        buy_button.disabled = true
+        worker.items[worker.item]["ItemOnable"] = 1;
+        worker.money -= worker.items[worker.item]["ItemPrice"];
     }
 
     (function () { $("[data-toggle='tooltip']").tooltip(); });
