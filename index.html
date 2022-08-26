@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" style="height:100%;">
+<html lang="zh" style="height:100%;">
 <link href="bootstrap.min.css" rel="stylesheet">
 <script src="jquery.min.js"></script>
 <script src="bootstrap.min.js"></script>
 <script src="xlsx.js"></script>
 <script src="worker.js"></script>
 <head>
-    <title>Document</title>
+    <title>加班模拟器</title>
 </head>
 
 
@@ -18,7 +18,12 @@
                 <p id="EnergyText" style="font-size: 60px; margin: 10px;">体力</p>
             </div>
             <div class="col">
-                <button type="button" class="btn btn-outline-primary" style="height:80%; width:60%; margin: 10px;float:right; font-size: 40px" data-bs-toggle="modal" data-bs-target="#exampleModal">查看物品</button>
+                <div class="container-fluid" style="float:right;">
+                    <button type="button" class="btn btn-outline-primary" style="height:80%; width:60%; margin: 10px;float:right; font-size: 40px" data-bs-toggle="modal" data-bs-target="#exampleModal">查看物品</button>
+                </div>
+                <div class="container-fluid" style="float:right;">
+                    <p id="MaxDepthText" style="font-size: 40px; margin: 10px; float:right">最高连续加班0天</p>
+                </div>
             </div>
         </div>
         <p id="MoneyText" style="font-size: 60px; margin: 10px;">金钱</p>      
@@ -51,9 +56,9 @@
                 </div>
               </div>
               <div class="container-fluid" style="height:30vh; border-style:solid; border-color:brown">
-                <div id="ItemName" style="white-space:normal; word-break:break-all;overflow:hidden;">道具名</div>
-                <div id="ItemDiscription" style="white-space:normal; word-break:break-all;overflow:hidden;">道具描述</div>
-                <div id="EffectDiscription" style="white-space:normal; word-break:break-all;overflow:hidden;">道具效果</div>
+                <div id="ItemName" style="font-size:30px; white-space:normal; word-break:break-all;overflow:hidden;">物品名</div>
+                <div id="ItemDiscription" style="font-size:30px; white-space:normal; word-break:break-all;overflow:hidden;">物品描述</div>
+                <div id="EffectDiscription" style="font-size:30px; white-space:normal; word-break:break-all;overflow:hidden;">物品效果</div>
               </div>
             </div>
             <div class="modal-footer">
@@ -64,6 +69,25 @@
         </div>
       </div>  
     </div> 
+
+    <div class="container-fluid">
+        <div class="modal fade" id="ItemChooseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="width: 100%;">
+          <div class="modal-dialog" style="top:10%; width:80vw;">
+            <div class="modal-content" style="">
+              <div class="modal-header">
+                <h5 class="modal-title" id="ItemChooseModalLabel">选择物品</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body" id="ItemChooseModalBody">
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+              </div>
+            </div>
+          </div>
+        </div>  
+      </div>
 
     <div id="MessageBox" class="container-fluid" style="height: 20%; width:auto; overflow:auto; text-align:center; border-style:solid; border-color:blueviolet">
         
@@ -76,10 +100,16 @@
     var i = 0;
 
     window.onload = function LoadData() {
-        let item_list = document.getElementById("ItemList")
+        let item_list = document.getElementById("ItemList");
         for (let j=0;j<worker.items.length;j++) {
-            item_list.insertAdjacentHTML("beforeend",'<div class="col" style="font-size:30px" onclick="ShowMessage(this)"><div id=item_' + worker.items[j]["ItemID"] + ' class="p-3 border bg-light">'+ worker.items[j]["ItemName"] +'</div></div>');
+            item_list.insertAdjacentHTML("beforeend",'<div class="col" style="font-size:30px;" onclick="ShowMessage(this)"><div id=' + worker.items[j]["ItemID"] + ' class="p-3 border bg-light">'+ worker.items[j]["ItemName"] +'</div></div>');
         } 
+        RefreshData();
+    }
+
+    function RefreshData() {
+        let max_depth_text = document.getElementById("MaxDepthText");    
+        max_depth_text.innerText = "最高连续工作" + worker.max_depth + "小时";
     }
 
     window.onunload = function SetCookie() {
@@ -112,7 +142,7 @@
     function TryWork() {
         worker.Work();
         ShowEnergy();
-        SendMessage();
+        RefreshData();
     }
 
     function TryRelax() {
@@ -120,9 +150,9 @@
         ShowEnergy();
     }
 
-    function SendMessage() {
+    function SendMessage(msg) {
         let message_box = document.getElementById("MessageBox");
-        message_box.insertAdjacentHTML("beforeend","<h1>work success</h1>");
+        message_box.insertAdjacentHTML("beforeend","<h1>" + msg + "</h1>");
         message_box.scrollTop = message_box.scrollHeight;
     }
 
@@ -133,8 +163,8 @@
         let effect_discription = document.getElementById("EffectDiscription");
         let buy_button = document.getElementById("BuyButton");
 
-        let item_id = window.event.srcElement.id;
-        worker.item = item_id.charAt(item_id.length - 1);    //获取点击物品id
+        let item_id = window.event.target.id;
+        worker.item = item_id;    //获取点击物品id
         
         item_name.innerText ="物品名：" + worker.items[worker.item]["ItemName"];
         item_discription.innerText ="物品描述:" + worker.items[worker.item]["ItemDiscription"];
