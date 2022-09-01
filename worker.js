@@ -71,7 +71,8 @@ class Worker {
 
     WorkItemObtain() {
         let item_pool = this.ItemPoolGenerate();
-        let lottery_poor = []; 
+        let lottery_pool = []; 
+        let choose_pool = [];
         let chosen_num = 0;
         let chosen_item = 0;
         let modal_body = document.getElementById("ItemChooseModalBody");
@@ -79,17 +80,48 @@ class Worker {
         if(item_pool.length > 0) {
             for(let item_id in item_pool) {     //道具的概率参数是n，则往奖池里加入n个该道具
                 for(let num = 0;num < this.items[item_pool[item_id]]["ItemRarity"];num++) {
-                    lottery_poor.push(item_pool[item_id]);
+                    lottery_pool.push(item_pool[item_id]);
                 }
             }
-            chosen_num = Math.round((lottery_poor.length - 1)*Math.random())
-            chosen_item = lottery_poor[chosen_num];  //从奖池抽道具
+            
+            for(let item_count=0;item_count<3;item_count++) {
+                chosen_num = Math.round((lottery_pool.length - 1)*Math.random())
+                chosen_item = lottery_pool[chosen_num];  //从奖池抽道具供选择
+                choose_pool.push(chosen_item);
+                //已抽出的道具不在池子中再出现
+                while(lottery_pool.indexOf(chosen_item) != -1) {
+                    lottery_pool.splice(lottery_pool.indexOf(chosen_item),1);
+                }  
+                if(lottery_pool.length == 0) {
+                    break;
+                }
+            }
+            
 
             $('#ItemChooseModal').modal('show');
             modal_body.innerHTML = null;
             
-            modal_body.insertAdjacentHTML("beforeend",'<div class="btn btn-outline-primary" title=' + this.items[chosen_item]["ItemID"] + ' onclick="worker.DoWorkItemObtain(this)">' + this.items[chosen_item]["ItemName"] + '</div>');
+            //生成道具选项
+            for(let show_item=0;show_item<choose_pool.length;show_item++) {
+                let item_color = this.GetRarity(this.items[choose_pool[show_item]]["ItemRarity"]);
+                modal_body.insertAdjacentHTML("beforeend",'<div class="btn btn-outline-' + item_color + '" title=' + this.items[choose_pool[show_item]]["ItemID"] + ' onclick="worker.DoWorkItemObtain(this)">' + this.items[choose_pool[show_item]]["ItemName"] + '</div>');
+            }
+            
         }
+    }
+
+    GetRarity(item_rarity) {
+        let item_color;
+        if(item_rarity >= 10) {
+            item_color = "secondary";
+        } else if(item_rarity < 10 && item_rarity >= 5) {
+            item_color = "primary";
+        } else if(item_rarity < 5 && item_rarity >= 2) {
+            item_color = "warning";
+        } else if(item_rarity < 2 && item_rarity >= 1) {
+            item_color = "danger";
+        }
+        return item_color;
     }
 
     //工作，消耗体力，获取金钱与道具
